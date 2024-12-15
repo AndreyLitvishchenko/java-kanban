@@ -11,18 +11,14 @@ import tasks.Task;
 
 public class TaskManager {
 
-    HashMap<Integer, Task> tasks = new HashMap<>();
-    HashMap<Integer, Subtask> subtasks = new HashMap<>();
-    HashMap<Integer, Epic> epics = new HashMap<>();
-    int id;
+    private HashMap<Integer, Task> tasks = new HashMap<>();
+    private HashMap<Integer, Subtask> subtasks = new HashMap<>();
+    private HashMap<Integer, Epic> epics = new HashMap<>();
+    private int id;
 
     // Управление задачами
     public ArrayList<Task> getAllTasks() {
-        ArrayList<Task> listTask = new ArrayList<>();
-        for (Task value : tasks.values()) {
-            listTask.add(value);
-        }
-        return listTask;
+        return new ArrayList<>(tasks.values());
     }
 
     public void deleteAllTasks() {
@@ -52,11 +48,7 @@ public class TaskManager {
 
     // Управление подзадачами
     public ArrayList<Subtask> getAllSubtasks() {
-        ArrayList<Subtask> listSubtasks = new ArrayList<>();
-        for (Subtask value : subtasks.values()) {
-            listSubtasks.add(value);
-        }
-        return listSubtasks;
+        return new ArrayList<>(subtasks.values());
     }
 
     public void deleteAllSubtask() {
@@ -77,16 +69,14 @@ public class TaskManager {
             subtasks.put(id, subtask);
             epic.getListSubtask().add(id);
             updateStatus(epicId);
-        } else {
-            System.out.println("Создайте эпик-задачу");
         }
     }
 
     public void patchSubtask(Subtask newSubtask) {
         int subtaskId = newSubtask.getId();
         if (subtasks.containsKey(subtaskId)) {
-            updateStatus(newSubtask.getEpicId());
             subtasks.put(newSubtask.getId(), newSubtask);
+            updateStatus(newSubtask.getEpicId());
         }
     }
 
@@ -101,20 +91,12 @@ public class TaskManager {
 
     // Управление эпиками
     public ArrayList<Epic> getAllEpics() {
-        ArrayList<Epic> listEpics = new ArrayList<>();
-        for (Epic value : epics.values()) {
-            listEpics.add(value);
-        }
-        return listEpics;
+        return new ArrayList<>(epics.values());
     }
 
     public void deleteAllEpics() {
-        if (!subtasks.isEmpty()) {
-            subtasks.clear();
-            epics.clear();
-        } else {
-            epics.clear();
-        }
+        subtasks.clear();
+        epics.clear();
     }
 
     public Epic getEpicId(int epicId) {
