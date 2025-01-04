@@ -44,11 +44,7 @@ public class Task {
     }
 
     public void setId(int id) {
-        if (this.id == 0) {
-            this.id = id;
-        } else {
-            System.out.println("Задаче уже присвоен id");
-        }
+        this.id = id;
     }
 
     @Override

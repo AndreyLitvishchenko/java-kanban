@@ -13,6 +13,9 @@ public class Subtask extends tasks.Task {
     }
 
     public void setEpicId(int epicId) {
+        if (epicId == this.getId()) {
+            return;
+        }
         this.epicId = epicId;
     }
 }
