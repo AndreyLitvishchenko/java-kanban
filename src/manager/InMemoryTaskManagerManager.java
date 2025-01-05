@@ -7,13 +7,14 @@ import tasks.Task;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class InMemoryTaskManagerManager implements TaskManager {
 
     private HashMap<Integer, Task> tasks = new HashMap<>();
     private HashMap<Integer, Subtask> subtasks = new HashMap<>();
     private HashMap<Integer, Epic> epics = new HashMap<>();
-    InMemoryHistoryManager inMemoryHistoryManager = new InMemoryHistoryManager();
+    private HistoryManager historyManager = Managers.getDefaultHistory();
     private int id;
 
     // Управление задачами
@@ -31,7 +32,7 @@ public class InMemoryTaskManagerManager implements TaskManager {
     public Task getTaskId(int taskId) {
         Task task = tasks.get(taskId);
         if (task != null) {
-            inMemoryHistoryManager.add(task);
+            historyManager.add(task);
         }
         return task;
     }
@@ -72,7 +73,7 @@ public class InMemoryTaskManagerManager implements TaskManager {
     public Subtask getSubtaskId(int subtaskId) {
         Subtask subtask = subtasks.get(subtaskId);
         if (subtask != null) {
-            inMemoryHistoryManager.add(subtask);
+            historyManager.add(subtask);
         }
         return subtask;
     }
@@ -132,7 +133,7 @@ public class InMemoryTaskManagerManager implements TaskManager {
     public Epic getEpicId(int epicId) {
         Epic epic = epics.get(epicId);
         if (epic != null) {
-            inMemoryHistoryManager.add(epic);
+            historyManager.add(epic);
         }
         return epic;
     }
@@ -161,6 +162,11 @@ public class InMemoryTaskManagerManager implements TaskManager {
             subtasks.remove(i);
         }
         epics.remove(id);
+    }
+
+    @Override
+    public List<Task> getHistory() {
+        return historyManager.getHistory();
     }
 
     private int getId() {

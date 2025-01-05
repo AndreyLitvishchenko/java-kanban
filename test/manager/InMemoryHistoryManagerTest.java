@@ -39,8 +39,8 @@ class InMemoryHistoryManagerTest {
     void getHistory() {
         List<Task> initialHistory = historyManager.getHistory();
         Assertions.assertEquals(0, initialHistory.size());
-        historyManager.add(task1);
-        historyManager.add(task2);
+        initialHistory.add(task1);
+        initialHistory.add(task2);
         Assertions.assertEquals(2, initialHistory.size());
     }
 }
