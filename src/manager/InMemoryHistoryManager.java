@@ -3,23 +3,83 @@ package manager;
 import tasks.Task;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class InMemoryHistoryManager implements HistoryManager {
-
-    private List<Task> history = new ArrayList<>();
-    private static final int MAX_HISTORY_SIZE = 10;
+    Map<Integer, Node> historyMap = new HashMap<>();
+    private Node head;
+    private Node tail;
 
     @Override
     public void add(Task task) {
-        if (history.size() > MAX_HISTORY_SIZE) {
-            history.remove(0);
+        if (task == null) {
+            return;
         }
-        history.add(task);
+        remove(task.getId());
+        Node newNode = new Node(task, null, null);
+        linkLast(newNode);
+        historyMap.put(task.getId(), newNode);
     }
 
     @Override
     public List<Task> getHistory() {
-        return new ArrayList<>(history);
+        List<Task> history = new ArrayList<>();
+        Node node = head;
+        while (node != null) {
+            history.add(node.task);
+            node = node.next;
+        }
+        return history;
+    }
+
+    @Override
+    public void remove(int id) {
+        Node node = historyMap.get(id);
+        if (node != null) {
+            removeNode(node);
+            historyMap.remove(id);
+        }
+    }
+
+    private void removeNode(Node node) {
+        if (node == null) {
+            return;
+        }
+
+        if (node == head) {
+            head = node.next;
+            if (head != null) {
+                head.prev = null;
+            } else {
+                tail = null; // Если список стал пустым
+            }
+        } else if (node == tail) {
+            tail = node.prev;
+            if (tail != null) {
+                tail.next = null;
+            } else {
+                head = null;
+            }
+        }
+
+        if (node.prev != null) {
+            node.prev.next = node.next;
+        }
+        if (node.next != null) {
+            node.next.prev = node.prev;
+        }
+    }
+
+
+    private void linkLast(Node node) {
+        if (tail == null) {
+            head = tail = node;
+        } else {
+            tail.next = node;
+            node.prev = tail;
+            tail = node;
+        }
     }
 }
