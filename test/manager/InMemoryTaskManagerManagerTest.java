@@ -9,8 +9,8 @@ import tasks.Subtask;
 import tasks.Task;
 
 import java.util.ArrayList;
+import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
 
 class InMemoryTaskManagerManagerTest {
     TaskManager taskManager = Managers.getDefault();
@@ -88,6 +88,9 @@ class InMemoryTaskManagerManagerTest {
         taskManager.deleteAllTasks();
         ArrayList<Task> tasks = taskManager.getAllTasks();
         Assertions.assertEquals(0, tasks.size());
+
+        List<Task> history = taskManager.getHistory();
+        Assertions.assertTrue(history.isEmpty());
     }
 
     @Test
@@ -157,6 +160,9 @@ class InMemoryTaskManagerManagerTest {
         taskManager.deleteAllSubtask();
         ArrayList<Subtask> subtasks = taskManager.getAllSubtasks();
         Assertions.assertEquals(0, subtasks.size());
+
+        List<Task> history = taskManager.getHistory();
+        Assertions.assertTrue(history.isEmpty());
     }
 
     @Test
@@ -222,6 +228,9 @@ class InMemoryTaskManagerManagerTest {
         taskManager.deleteAllEpics();
         ArrayList<Epic> epics = taskManager.getAllEpics();
         Assertions.assertEquals(0, epics.size());
+
+        List<Task> history = taskManager.getHistory();
+        Assertions.assertTrue(history.isEmpty());
     }
 
     @Test
