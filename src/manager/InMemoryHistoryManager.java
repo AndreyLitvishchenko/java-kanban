@@ -1,5 +1,6 @@
 package manager;
 
+import org.w3c.dom.Node;
 import tasks.Task;
 
 import java.util.ArrayList;
@@ -84,36 +85,35 @@ public class InMemoryHistoryManager implements HistoryManager {
             tail = node;
         }
     }
+
+    private class Node {
+        Task task;
+        Node prev;
+        Node next;
+
+        public Node(Task task, Node prev, Node next) {
+            this.task = task;
+            this.prev = prev;
+            this.next = next;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (o == null || getClass() != o.getClass()) return false;
+            Node node = (Node) o;
+            return Objects.equals(task, node.task);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hashCode(task);
+        }
+
+        @Override
+        public String toString() {
+            return "Node{" +
+                    "task=" + task +
+                    '}';
+        }
+    }
 }
-
-class Node {
-    Task task;
-    Node prev;
-    Node next;
-
-    public Node(Task task, Node prev, Node next) {
-        this.task = task;
-        this.prev = prev;
-        this.next = next;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
-        Node node = (Node) o;
-        return Objects.equals(task, node.task);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(task);
-    }
-
-    @Override
-    public String toString() {
-        return "Node{" +
-                "task=" + task +
-                '}';
-    }
-}
-
