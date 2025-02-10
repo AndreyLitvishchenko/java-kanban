@@ -1,6 +1,5 @@
 package manager;
 
-import org.w3c.dom.Node;
 import tasks.Task;
 
 import java.util.ArrayList;
@@ -86,7 +85,7 @@ public class InMemoryHistoryManager implements HistoryManager {
         }
     }
 
-    private class Node {
+    private static class Node {
         Task task;
         Node prev;
         Node next;
