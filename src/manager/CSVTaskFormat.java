@@ -21,11 +21,14 @@ public class CSVTaskFormat {
             return String.format("%d,%s,%s,%s,%s,%d", subtask.getId(), TypeTask.SUBTASK, subtask.getTitle(), subtask.getStatus(), subtask.getDescription(), subtask.getEpicId());
         }
     }
-    
+
     public static String toString(List<Task> historyManager) {
         StringBuilder historyId = new StringBuilder();
-        for (Task task : historyManager) {
-            historyId.append(String.format("%d, ", task.getId()));
+        for (int i = 0; i < historyManager.size(); i++) {
+            historyId.append(historyManager.get(i).getId());
+            if (i < historyManager.size() - 1) {
+                historyId.append(",");
+            }
         }
         return historyId.toString();
     }

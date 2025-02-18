@@ -23,7 +23,9 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
     public static void main(String[] args) {
         try {
-            File tempFile = File.createTempFile("tasks", ".csv");
+            String userHome = System.getProperty("user.home");
+            File desktopDir = new File(userHome + "/Desktop");
+            File tempFile = new File(desktopDir, "tasks.csv");
             System.out.println("Временный файл: " + tempFile.getAbsolutePath());
             try (var writer = new java.io.BufferedWriter(new java.io.FileWriter(tempFile))) {
                 writer.write("id,type,name,status,description,epic");
@@ -33,8 +35,9 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
             System.out.println("Задачи: " + emptyManager.getAllTasks());
             System.out.println("Эпики: " + emptyManager.getAllEpics());
             System.out.println("Сабтаски: " + emptyManager.getAllSubtasks());
-            System.out.println("История: " + emptyManager.getHistory());
+            System.out.println("История: " + CSVTaskFormat.toString(emptyManager.getHistory()));
             System.out.println("-----------------------------------------------------");
+
             FileBackedTaskManager manager = new FileBackedTaskManager(tempFile);
             Task task1 = new Task("Task 1", "Описание задачи 1");
             manager.postTask(task1);
@@ -42,12 +45,17 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
             manager.postEpic(epic1);
             Subtask subtask1 = new Subtask("Subtask 1", "Описание сабтаска 1", epic1.getId());
             manager.postSubtask(subtask1);
+            manager.getTaskId(task1.getId());
+            manager.getEpicId(epic1.getId());
+            manager.getSubtaskId(subtask1.getId());
+            manager.save();
             System.out.println("Исходный менеджер:");
             System.out.println("Задачи: " + manager.getAllTasks());
             System.out.println("Эпики: " + manager.getAllEpics());
             System.out.println("Сабтаски: " + manager.getAllSubtasks());
             System.out.println("История: " + manager.getHistory());
             System.out.println("-----------------------------------------------------");
+
             FileBackedTaskManager loadedManager = FileBackedTaskManager.loadFromFile(tempFile);
             System.out.println("Загруженный менеджер:");
             System.out.println("Задачи: " + loadedManager.getAllTasks());
@@ -55,7 +63,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
             System.out.println("Сабтаски: " + loadedManager.getAllSubtasks());
             System.out.println("История: " + loadedManager.getHistory());
         } catch (IOException e) {
-            e.printStackTrace();
+            e.getMessage();
         }
     }
 
@@ -119,6 +127,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     protected void save() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
             writer.write("id,type,name,status,description,epic");
+            writer.newLine();
             for (Task task : getAllTasks()) {
                 writer.write(CSVTaskFormat.toString(task));
                 writer.newLine();

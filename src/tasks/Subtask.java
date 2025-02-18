@@ -2,7 +2,7 @@ package tasks;
 
 public class Subtask extends tasks.Task {
     private int epicId;
-    private TypeTask tyoe = TypeTask.SUBTASK;
+    private TypeTask type = TypeTask.SUBTASK;
 
     public Subtask(String title, String description, int epicId) {
         super(title, description);
@@ -13,8 +13,8 @@ public class Subtask extends tasks.Task {
         return epicId;
     }
 
-    public TypeTask getTyoe() {
-        return tyoe;
+    public TypeTask getType() {
+        return type;
     }
 
     public void setEpicId(int epicId) {
