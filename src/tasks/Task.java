@@ -7,6 +7,7 @@ public class Task {
     private String title;
     private String description;
     private Status status;
+    private TypeTask type = TypeTask.TASK;
     private int id;
 
     public Task(String title, String description) {
@@ -37,6 +38,14 @@ public class Task {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public TypeTask getType() {
+        return type;
+    }
+
+    public void setType(TypeTask type) {
+        this.type = type;
     }
 
     public int getId() {
