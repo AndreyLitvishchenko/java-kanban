@@ -148,20 +148,6 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     @Override
-    public ArrayList<Task> getAllTasks() {
-        return new ArrayList<>(tasks.values());
-    }
-
-    @Override
-    public Task getTaskId(int taskId) {
-        Task task = tasks.get(taskId);
-        if (task != null) {
-            historyManager.add(task);
-        }
-        return task;
-    }
-
-    @Override
     public void deleteAllTasks() {
         super.deleteAllTasks();
         save();
@@ -183,20 +169,6 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     public void patchTask(Task newTask) {
         super.patchTask(newTask);
         save();
-    }
-
-    @Override
-    public ArrayList<Epic> getAllEpics() {
-        return new ArrayList<>(epics.values());
-    }
-
-    @Override
-    public Epic getEpicId(int epicId) {
-        Epic epic = epics.get(epicId);
-        if (epic != null) {
-            historyManager.add(epic);
-        }
-        return epic;
     }
 
     @Override
@@ -227,18 +199,6 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     @Override
-    public ArrayList<Subtask> getAllSubtasks() {
-        return new ArrayList<>(subtasks.values());
-    }
-
-
-    @Override
-    public void deleteAllSubtask() {
-        super.deleteAllSubtask();
-        save();
-    }
-
-    @Override
     public void postSubtask(Subtask subtask) {
         super.postSubtask(subtask);
         save();
@@ -254,10 +214,5 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     public void deleteSubtaskId(Integer subtaskId) {
         super.deleteSubtaskId(subtaskId);
         save();
-    }
-
-    @Override
-    public List<Task> getHistory() {
-        return historyManager.getHistory();
     }
 }
