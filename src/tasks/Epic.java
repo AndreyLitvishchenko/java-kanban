@@ -32,13 +32,8 @@ public class Epic extends Task {
         return type;
     }
 
-    @Override
-    public LocalDateTime getEndTime() {
-        return endTime;
-    }
-
     public void updateDuration(List<Subtask> subtaskList) {
-        if (listSubtask.isEmpty()) {
+        if (subtaskList.isEmpty()) {
             setDuration(Duration.ZERO);
             return;
         }
@@ -46,8 +41,13 @@ public class Epic extends Task {
         Duration totalDuration = Duration.ZERO;
 
         for (Subtask subtask : subtaskList) {
-            totalDuration = totalDuration.plus(subtask.getDuration());
+            Duration d = subtask.getDuration();
+            if (d == null) {
+                d = Duration.ZERO;
+            }
+            totalDuration = totalDuration.plus(d);
         }
+        setDuration(totalDuration);
     }
 
     public void updateTime(List<Subtask> subtaskList) {
@@ -60,8 +60,7 @@ public class Epic extends Task {
         LocalDateTime earliestStart = null;
         LocalDateTime latestEnd = null;
 
-        for (Integer subtaskId : listSubtask) {
-            Subtask subtask = subtaskList.get(subtaskId);
+        for (Subtask subtask : subtaskList) {
             if (earliestStart == null || subtask.getStartTime().isBefore(earliestStart)) {
                 earliestStart = subtask.getStartTime();
             }
@@ -72,5 +71,15 @@ public class Epic extends Task {
         }
         setStartTime(earliestStart);
         setEndTime(latestEnd);
+    }
+
+    @Override
+    public LocalDateTime getEndTime() {
+        return endTime;
+    }
+
+    @Override
+    public void setEndTime(LocalDateTime endTime) {
+        this.endTime = endTime;
     }
 }
