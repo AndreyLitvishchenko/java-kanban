@@ -13,6 +13,7 @@ public class Task {
     private Duration duration;
     private LocalDateTime startTime;
     private int id;
+    private LocalDateTime endTime;
 
     public Task(String title, String description) {
         this.title = title;
@@ -85,7 +86,14 @@ public class Task {
     }
 
     public LocalDateTime getEndTime() {
+        if (startTime == null || duration == null) {
+            return null;
+        }
         return startTime.plus(duration);
+    }
+
+    public void setEndTime(LocalDateTime endTime) {
+        this.endTime = endTime;
     }
 
     @Override

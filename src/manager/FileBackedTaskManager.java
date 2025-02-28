@@ -11,6 +11,9 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +31,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
             File tempFile = new File(desktopDir, "tasks.csv");
             System.out.println("Временный файл: " + tempFile.getAbsolutePath());
             try (var writer = new java.io.BufferedWriter(new java.io.FileWriter(tempFile))) {
-                writer.write("id,type,name,status,description,epic");
+                writer.write("id,type,name,status,description,epic,duration,startTime,endTime");
             }
             FileBackedTaskManager emptyManager = FileBackedTaskManager.loadFromFile(tempFile);
             System.out.println("Пустой менеджер:");
@@ -39,11 +42,11 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
             System.out.println("-----------------------------------------------------");
 
             FileBackedTaskManager manager = new FileBackedTaskManager(tempFile);
-            Task task1 = new Task("Task 1", "Описание задачи 1");
+            Task task1 = new Task("Task 1", "Описание задачи 1", Duration.ofMinutes(90), LocalDateTime.of(2025, Month.MARCH, 1, 10,0));
             manager.postTask(task1);
             Epic epic1 = new Epic("Epic 1", "Описание эпика 1");
             manager.postEpic(epic1);
-            Subtask subtask1 = new Subtask("Subtask 1", "Описание сабтаска 1", epic1.getId());
+            Subtask subtask1 = new Subtask("Subtask 1", "Описание сабтаска 1", Duration.ofMinutes(30), LocalDateTime.of(2025, Month.MARCH, 1, 11,0), epic1.getId());
             manager.postSubtask(subtask1);
             manager.getTaskId(task1.getId());
             manager.getEpicId(epic1.getId());
@@ -126,7 +129,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
     protected void save() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
-            writer.write("id,type,name,status,description,epic");
+            writer.write("id,type,name,status,description,epic,duration,startTime,endTime");
             writer.newLine();
             for (Task task : getAllTasks()) {
                 writer.write(CSVTaskFormat.toString(task));
