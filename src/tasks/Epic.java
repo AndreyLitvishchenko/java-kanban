@@ -7,7 +7,6 @@ import java.util.List;
 
 public class Epic extends Task {
     private ArrayList<Integer> listSubtask = new ArrayList<>();
-    private TypeTask type = TypeTask.EPIC;
     private LocalDateTime endTime;
 
     public Epic(String title, String description) {
@@ -25,11 +24,6 @@ public class Epic extends Task {
 
     public void setListSubtask(ArrayList<Integer> listSubtask) {
         this.listSubtask = listSubtask;
-    }
-
-    @Override
-    public TypeTask getType() {
-        return type;
     }
 
     public void updateDuration(List<Subtask> subtaskList) {

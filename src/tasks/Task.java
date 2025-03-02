@@ -9,7 +9,7 @@ public class Task {
     private String title;
     private String description;
     private Status status;
-    private TypeTask type = TypeTask.TASK;
+    private TypeTask type;
     private Duration duration;
     private LocalDateTime startTime;
     private int id;
@@ -54,7 +54,12 @@ public class Task {
     }
 
     public TypeTask getType() {
-        return type;
+        if (this instanceof Epic) {
+            return TypeTask.EPIC;
+        } else if (this instanceof Subtask) {
+            return TypeTask.SUBTASK;
+        }
+        return TypeTask.TASK;
     }
 
     public void setType(TypeTask type) {
