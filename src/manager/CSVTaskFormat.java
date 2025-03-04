@@ -17,7 +17,7 @@ public class CSVTaskFormat {
     public static String toString(Task task) {
         Long duration = (task.getDuration() == null) ? 0 : task.getDuration().toMinutes();
         String startTimeStr = (task.getStartTime() == null) ? "null" : task.getStartTime().toString();
-        String endTimeStr = (task.getEndTime() == null) ? "null": task.getEndTime().toString();
+        String endTimeStr = (task.getEndTime() == null) ? "null" : task.getEndTime().toString();
         if (task.getType() == TypeTask.TASK) {
             return String.format("%d,%s,%s,%s,%s,%d,%s,%s", task.getId(), TypeTask.TASK, task.getTitle(), task.getStatus(),
                     task.getDescription(), duration, startTimeStr, endTimeStr);
