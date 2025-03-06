@@ -76,4 +76,9 @@ public class Epic extends Task {
     public void setEndTime(LocalDateTime endTime) {
         this.endTime = endTime;
     }
+
+    @Override
+    public TypeTask getType() {
+        return TypeTask.EPIC;
+    }
 }

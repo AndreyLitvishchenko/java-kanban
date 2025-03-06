@@ -46,7 +46,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
             manager.postTask(task1);
             Epic epic1 = new Epic("Epic 1", "Описание эпика 1");
             manager.postEpic(epic1);
-            Subtask subtask1 = new Subtask("Subtask 1", "Описание сабтаска 1", epic1.getId(), Duration.ofMinutes(30), LocalDateTime.of(2025, Month.MARCH, 1, 11,0));
+            Subtask subtask1 = new Subtask("Subtask 1", "Описание сабтаска 1", epic1.getId(), Duration.ofMinutes(30), LocalDateTime.of(2025, Month.MARCH, 1, 15,0));
             manager.postSubtask(subtask1);
             manager.getTaskId(task1.getId());
             manager.getEpicId(epic1.getId());

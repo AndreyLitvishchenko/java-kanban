@@ -60,7 +60,6 @@ public class CSVTaskFormat {
             Task newTask = new Task(title, description);
             newTask.setId(id);
             newTask.setStatus(status);
-            newTask.setType(type);
             if (duration > 0) {
                 newTask.setDuration(Duration.ofMinutes(duration));
             }
@@ -79,7 +78,6 @@ public class CSVTaskFormat {
             Task epicTask = new Epic(title, description);
             epicTask.setId(id);
             epicTask.setStatus(status);
-            epicTask.setType(type);
             if (duration > 0) {
                 epicTask.setDuration(Duration.ofMinutes(duration));
             }
@@ -99,7 +97,6 @@ public class CSVTaskFormat {
             Task subtask = new Subtask(title, description, epicId);
             subtask.setId(id);
             subtask.setStatus(status);
-            subtask.setType(type);
             if (duration > 0) {
                 subtask.setDuration(Duration.ofMinutes(duration));
             }

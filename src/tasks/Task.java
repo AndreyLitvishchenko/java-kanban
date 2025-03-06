@@ -41,10 +41,6 @@ public class Task {
         return description;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public Status getStatus() {
         return status;
     }
@@ -54,16 +50,7 @@ public class Task {
     }
 
     public TypeTask getType() {
-        if (this instanceof Epic) {
-            return TypeTask.EPIC;
-        } else if (this instanceof Subtask) {
-            return TypeTask.SUBTASK;
-        }
         return TypeTask.TASK;
-    }
-
-    public void setType(TypeTask type) {
-        this.type = type;
     }
 
     public Duration getDuration() {
