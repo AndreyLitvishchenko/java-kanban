@@ -26,6 +26,14 @@ public class Epic extends Task {
         this.listSubtask = listSubtask;
     }
 
+    // Метод для получения списка подзадач эпика через менеджер задач
+    public List<Subtask> getSubtasks() {
+        // Этот метод будет использоваться в HTTP API
+        // Реальная реализация должна получать подзадачи из менеджера задач
+        ArrayList<Subtask> subtasks = new ArrayList<>();
+        return subtasks;
+    }
+
     public void updateDuration(List<Subtask> subtaskList) {
         if (subtaskList.isEmpty()) {
             setDuration(Duration.ZERO);
