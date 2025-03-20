@@ -1,19 +1,18 @@
 package http.handler;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-
 import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-
 import exception.NotFoundException;
 import exception.TaskInteractionException;
 import http.HttpTaskServer;
 import manager.TaskManager;
 import tasks.Subtask;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 
 public class SubtaskHandler extends BaseHttpHandler implements HttpHandler {
     private final TaskManager taskManager;
@@ -41,7 +40,7 @@ public class SubtaskHandler extends BaseHttpHandler implements HttpHandler {
                     handleDeleteRequest(exchange, path, query);
                     break;
                 default:
-                    sendNotFound(exchange, "Метод не поддерживается");
+                    sendMethodNotAllowed(exchange, "Метод не поддерживается");
             }
         } catch (NotFoundException e) {
             sendNotFound(exchange, e.getMessage());
@@ -68,7 +67,7 @@ public class SubtaskHandler extends BaseHttpHandler implements HttpHandler {
                 sendText(exchange, gson.toJson(subtasks));
             }
         } else {
-            sendNotFound(exchange, "Неверный путь");
+            sendBadRequest(exchange, "Плохой запрос");
         }
     }
 
@@ -86,7 +85,7 @@ public class SubtaskHandler extends BaseHttpHandler implements HttpHandler {
                 sendText(exchange, gson.toJson(subtask));
             }
         } else {
-            sendNotFound(exchange, "Неверный путь");
+            sendBadRequest(exchange, "Плохой запрос");
         }
     }
 
@@ -102,7 +101,7 @@ public class SubtaskHandler extends BaseHttpHandler implements HttpHandler {
                 sendText(exchange, "Все подзадачи успешно удалены");
             }
         } else {
-            sendNotFound(exchange, "Неверный путь");
+            sendBadRequest(exchange, "Плохой запрос");
         }
     }
 }

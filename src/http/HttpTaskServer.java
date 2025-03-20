@@ -1,19 +1,8 @@
 package http;
 
-import java.io.IOException;
-import java.net.InetSocketAddress;
-import java.time.Duration;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.TypeAdapter;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonToken;
-import com.google.gson.stream.JsonWriter;
 import com.sun.net.httpserver.HttpServer;
-
+import http.handler.BaseHttpHandler;
 import http.handler.EpicHandler;
 import http.handler.HistoryHandler;
 import http.handler.PrioritizedHandler;
@@ -22,11 +11,13 @@ import http.handler.TaskHandler;
 import manager.Managers;
 import manager.TaskManager;
 
+import java.io.IOException;
+import java.net.InetSocketAddress;
+
 public class HttpTaskServer {
     public static final int PORT = 8080;
     private final HttpServer server;
     private final TaskManager taskManager;
-    private static final Gson gson = createGson();
 
     public HttpTaskServer() throws IOException {
         this(Managers.getDefault());
@@ -34,9 +25,8 @@ public class HttpTaskServer {
 
     public HttpTaskServer(TaskManager taskManager) throws IOException {
         this.taskManager = taskManager;
-        server = HttpServer.create(new InetSocketAddress("localhost", PORT), 0);
+        server = HttpServer.create(new InetSocketAddress("localhost", getPort()), 0);
 
-        // Настраиваем обработчики для каждого эндпоинта
         server.createContext("/tasks", new TaskHandler(taskManager));
         server.createContext("/subtasks", new SubtaskHandler(taskManager));
         server.createContext("/epics", new EpicHandler(taskManager));
@@ -46,7 +36,7 @@ public class HttpTaskServer {
 
     public void start() {
         server.start();
-        System.out.println("HTTP-сервер запущен на порту " + PORT);
+        System.out.println("HTTP-сервер запущен на порту " + getPort());
     }
 
     public void stop() {
@@ -54,59 +44,12 @@ public class HttpTaskServer {
         System.out.println("HTTP-сервер остановлен");
     }
 
-    private static Gson createGson() {
-        GsonBuilder gsonBuilder = new GsonBuilder();
-
-        // Настройка адаптеров для сериализации/десериализации LocalDateTime и Duration
-        gsonBuilder.registerTypeAdapter(LocalDateTime.class, new TypeAdapter<LocalDateTime>() {
-            private final DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
-
-            @Override
-            public void write(JsonWriter jsonWriter, LocalDateTime localDateTime) throws IOException {
-                if (localDateTime == null) {
-                    jsonWriter.nullValue();
-                } else {
-                    jsonWriter.value(formatter.format(localDateTime));
-                }
-            }
-
-            @Override
-            public LocalDateTime read(JsonReader jsonReader) throws IOException {
-                if (jsonReader.peek() == JsonToken.NULL) {
-                    jsonReader.nextNull();
-                    return null;
-                }
-                String dateString = jsonReader.nextString();
-                return LocalDateTime.parse(dateString, formatter);
-            }
-        });
-
-        gsonBuilder.registerTypeAdapter(Duration.class, new TypeAdapter<Duration>() {
-            @Override
-            public void write(JsonWriter jsonWriter, Duration duration) throws IOException {
-                if (duration == null) {
-                    jsonWriter.nullValue();
-                } else {
-                    jsonWriter.value(duration.toMinutes());
-                }
-            }
-
-            @Override
-            public Duration read(JsonReader jsonReader) throws IOException {
-                if (jsonReader.peek() == JsonToken.NULL) {
-                    jsonReader.nextNull();
-                    return null;
-                }
-                long minutes = jsonReader.nextLong();
-                return Duration.ofMinutes(minutes);
-            }
-        });
-
-        return gsonBuilder.create();
+    public static Gson getGson() {
+        return BaseHttpHandler.gson;
     }
 
-    public static Gson getGson() {
-        return gson;
+    public int getPort() {
+        return PORT;
     }
 
     public static void main(String[] args) throws IOException {

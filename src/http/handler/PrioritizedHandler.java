@@ -39,7 +39,7 @@ public class PrioritizedHandler extends BaseHttpHandler implements HttpHandler {
 
             sendText(exchange, gson.toJson(allTasks));
         } else {
-            sendNotFound(exchange, "Метод не поддерживается");
+            sendMethodNotAllowed(exchange, "Метод не поддерживается");
         }
     }
 }

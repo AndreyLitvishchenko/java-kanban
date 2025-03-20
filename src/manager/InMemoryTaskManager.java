@@ -1,10 +1,5 @@
 package manager;
 
-import tasks.Epic;
-import tasks.Status;
-import tasks.Subtask;
-import tasks.Task;
-
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -12,6 +7,11 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+import exception.TaskInteractionException;
+import tasks.Epic;
+import tasks.Status;
+import tasks.Subtask;
+import tasks.Task;
 
 public class InMemoryTaskManager implements TaskManager {
 
@@ -51,7 +51,7 @@ public class InMemoryTaskManager implements TaskManager {
         boolean hasOverlap = getPrioritizedTasks().stream()
                 .anyMatch(existingTask -> isTimeIntersect(existingTask, task));
         if (hasOverlap) {
-            throw new IllegalArgumentException("Невозможно добавить задачу. " +
+            throw new TaskInteractionException("Невозможно добавить задачу. " +
                     "Время выполнения пересекается с уже существующей задачей.");
         }
         int id = getId();
@@ -62,7 +62,6 @@ public class InMemoryTaskManager implements TaskManager {
         }
     }
 
-
     @Override
     public void patchTask(Task newTask) {
         boolean hasOverlap = getPrioritizedTasks().stream()
@@ -70,7 +69,7 @@ public class InMemoryTaskManager implements TaskManager {
                 .anyMatch(existing -> isTimeIntersect(existing, newTask));
 
         if (hasOverlap) {
-            throw new IllegalArgumentException("Невозможно обновить задачу. " +
+            throw new TaskInteractionException("Невозможно обновить задачу. " +
                     "Время выполнения пересекается с уже существующей задачей.");
         }
         int taskId = newTask.getId();
@@ -81,7 +80,6 @@ public class InMemoryTaskManager implements TaskManager {
             }
         }
     }
-
 
     @Override
     public void deleteIdTask(int id) {
@@ -126,7 +124,7 @@ public class InMemoryTaskManager implements TaskManager {
                 .anyMatch(existingTask -> isTimeIntersect(existingTask, subtask));
 
         if (hasOverlap) {
-            throw new IllegalArgumentException("Невозможно добавить подзадачу. " +
+            throw new TaskInteractionException("Невозможно добавить подзадачу. " +
                     "Время выполнения пересекается с уже существующей задачей.");
         }
         int subtaskId = getId();
@@ -153,7 +151,7 @@ public class InMemoryTaskManager implements TaskManager {
                 .anyMatch(existingTask -> isTimeIntersect(existingTask, newSubtask));
 
         if (isIntersecting) {
-            throw new IllegalArgumentException("Обновлённая подзадача пересекается по времени с существующей задачей.");
+            throw new TaskInteractionException("Обновлённая подзадача пересекается по времени с существующей задачей.");
         }
 
         if (subtasks.containsKey(subtaskId)) {

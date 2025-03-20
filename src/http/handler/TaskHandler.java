@@ -41,7 +41,7 @@ public class TaskHandler extends BaseHttpHandler implements HttpHandler {
                     handleDeleteRequest(exchange, path, query);
                     break;
                 default:
-                    sendNotFound(exchange, "Метод не поддерживается");
+                    sendMethodNotAllowed(exchange, "Метод не поддерживается");
             }
         } catch (NotFoundException e) {
             sendNotFound(exchange, e.getMessage());
@@ -68,7 +68,7 @@ public class TaskHandler extends BaseHttpHandler implements HttpHandler {
                 sendText(exchange, gson.toJson(tasks));
             }
         } else {
-            sendNotFound(exchange, "Неверный путь");
+            sendBadRequest(exchange, "Неверный путь");
         }
     }
 
@@ -86,7 +86,7 @@ public class TaskHandler extends BaseHttpHandler implements HttpHandler {
                 sendText(exchange, gson.toJson(task));
             }
         } else {
-            sendNotFound(exchange, "Неверный путь");
+            sendBadRequest(exchange, "Неверный путь");
         }
     }
 
@@ -102,7 +102,7 @@ public class TaskHandler extends BaseHttpHandler implements HttpHandler {
                 sendText(exchange, "Все задачи успешно удалены");
             }
         } else {
-            sendNotFound(exchange, "Неверный путь");
+            sendBadRequest(exchange, "Неверный путь");
         }
     }
 }
