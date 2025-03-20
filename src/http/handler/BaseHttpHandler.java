@@ -69,7 +69,7 @@ public class BaseHttpHandler {
         h.getResponseBody().write(resp);
         h.close();
     }
-    
+
     private static Gson createGson() {
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter());
